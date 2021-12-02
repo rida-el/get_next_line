@@ -1,16 +1,15 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rel-maza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/30 18:30:03 by rel-maza          #+#    #+#             */
-/*   Updated: 2021/12/01 11:05:32 by rel-maza         ###   ########.fr       */
+/*   Created: 2021/12/02 11:48:51 by rel-maza          #+#    #+#             */
+/*   Updated: 2021/12/02 11:48:53 by rel-maza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 char	*get_line(char *res)
 {
@@ -84,31 +83,41 @@ char	*ft_read(int fd, char *res)
 
 char	*get_next_line(int fd)
 {
-	static char	*res;
+	static char	*res[1000];
 	char		*line;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	res = ft_read(fd, res);
-	if (res == NULL)
+	//files
+	
+	res[fd] = ft_read(fd, res[fd]);
+	if (res[fd] == NULL)
 		return (NULL);
-	line = get_line(res);
-	res = res_update(res);
+	line = get_line(res[fd]);
+	res[fd] = res_update(res[fd]);
 	return (line);
 }
 
-// int	main(int ac, char **av){
-// 	int fd;
-// 	int i;
+int	main(int ac, char **av){
+	int fd1,fd2;
+	int i;
 
-// 	i = 0;
-// 	if (!ac)
-// 		return (0);
-// 	fd = open(av[1], O_RDONLY);
-// 	printf("%d\n", fd);
-// 	char *ret;
-// 	while ((ret = get_next_line(fd)) != NULL ){
-// 		printf("GNL=%s", ret);
-// 		i++;
-// 	}
-// }
+	i = 0;
+	if (!ac)
+		return (0);
+	fd1 = open(av[1], O_RDONLY);
+	fd2 = open(av[2], O_RDONLY);
+	printf("%d\n%d\n", fd1,fd2);
+	char *ret;
+	char *s;
+	ret = "";
+	s = "";
+	while ((ret != NULL) || (s != NULL )){
+		ret = get_next_line(fd1);
+		s = get_next_line(fd2);
+		printf("1=%s", ret);
+		printf("2=%s", s);
+	}
+	
+}
+
